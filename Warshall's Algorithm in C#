@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Warshall_s_Experiment
+{
+    class Program
+    {
+        class MainClass
+        {
+            static int Vrtx = 4;
+
+            void transitiveClosure(int[,] graph)
+            {
+
+                int[,] output = new int[Vrtx, Vrtx];
+                int i, j, k;
+
+                for (i = 0; i < Vrtx; i++)
+                    for (j = 0; j < Vrtx; j++)
+                        output[i, j] = graph[i, j];
+
+
+                for (k = 0; k < Vrtx; k++)
+                {
+                    for (i = 0; i < Vrtx; i++)
+                    {
+                        for (j = 0; j < Vrtx; j++)
+                        {
+                            output[i, j] = (output[i, j] != 0) ||
+                                         ((output[i, k] != 0) &&
+                                          (output[k, j] != 0)) ? 1 : 0;
+                        }
+                    }
+                }
+
+                printSolution(output);
+            }
+
+            void printSolution(int[,] output)
+            {
+                Console.WriteLine("Following matrix is transitive" +
+                                  " closure of the given graph: ");
+                for (int i = 0; i < Vrtx; i++)
+                {
+                    for (int j = 0; j < Vrtx; j++)
+                        Console.Write(output[i, j] + " ");
+                    Console.WriteLine();
+                }
+            }
+            static void Main(string[] args)
+            {
+                int i, j;
+                int[,] graph = new int[4, 4];
+                Console.WriteLine("Input elements in the matrix :");
+                for (i = 0; i < 4; i++)
+                {
+                    for (j = 0; j < 4; j++)
+                    {
+                        Console.Write("element - [{0},{1}] : ", i, j);
+                        graph[i, j] = Convert.ToInt32(Console.ReadLine());
+                    }
+                }
+
+                MainClass g = new MainClass();
+                g.transitiveClosure(graph);
+            }
+        }
+    }
+}
